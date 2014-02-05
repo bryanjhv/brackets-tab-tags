@@ -9,3 +9,6 @@ Simply type, and if your cursor is between `<tag>|</tag>` (`|` is the cursor) an
     |
 </tag>
 ```
+
+### ToDo
+Check if this extension works in Macintosh.
