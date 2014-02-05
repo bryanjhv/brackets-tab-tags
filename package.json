@@ -1,0 +1,11 @@
+{
+    "name": "tab-tags",
+    "title": "Tab tags",
+    "description": "Adds an Aptana-like tab when pressing ENTER after an opening HTML or XML tag.",
+    "version": "1.0.0",
+    "author": "Bryan Horna <bryanjhv@gmail.com>",
+    "homepage": "https://github.com/bryanjhv/brackets-tab-tags",
+    "engines": {
+        "brackets": ">=0.31.0"
+    }
+}
