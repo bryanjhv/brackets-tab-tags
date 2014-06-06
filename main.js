@@ -2,15 +2,27 @@
 /*global define, brackets, $ */
 
 define(function (require, exports, module) {
-    
+
     "use strict";
-    
+
     // Brackets modules
     var AppInit         = brackets.getModule("utils/AppInit"),
         DocumentManager = brackets.getModule("document/DocumentManager"),
         EditorManager   = brackets.getModule("editor/EditorManager"),
         KeyEvent        = brackets.getModule("utils/KeyEvent");
-    
+
+    function _createIndentation(editor) {
+        if (editor._codeMirror.getOption("indentWithTabs")) {
+            return "\t";
+        } else {
+            var indent = "";
+            for (var i = 0, spaceUnits = editor._codeMirror.getOption("indentUnit"); i < spaceUnits; i += 1) {
+                indent += " ";
+            }
+            return indent;
+        }
+    }
+
     // Function to handle when user presses ENTER
     var _keyEventHandler = function ($event, editor, event) {
         // If the user pressed ENTER (RETURN)
@@ -26,16 +38,17 @@ define(function (require, exports, module) {
                     var start = {
                         line: cursorPos.line,
                         ch: cursorPos.ch
-                    };
+                    },
+                        indent = _createIndentation(editor);
                     // Filter "\t", so if we have:
                     // <html>
                     //     <head>
-                    //         
+                    //
                     //     </head>
                     // </html>
                     // then "<head>" haves a "\t".
                     var _tabs = lineContent.split(/\S+/)[0];
-                    editor.document.replaceRange("\n" + _tabs + "\t\n" + _tabs, start, cursorPos);
+                    editor.document.replaceRange("\n" + _tabs + indent + "\n" + _tabs, start, cursorPos);
                     event.preventDefault();
                     cursorPos = editor.getCursorPos();
                     editor.setCursorPos(cursorPos.line - 1, editor.document.getLine(cursorPos.line).length - 1);
@@ -43,20 +56,20 @@ define(function (require, exports, module) {
             }
         }
     };
-    
+
     var _activeEditorChangeHandler = function ($event, focusedEditor, lostEditor) {
-		if (lostEditor) {
-			$(lostEditor).off("keyEvent", _keyEventHandler);
-		}
-		if (focusedEditor) {
-			$(focusedEditor).on("keyEvent", _keyEventHandler);
-		}
-	};
-    
+        if (lostEditor) {
+            $(lostEditor).off("keyEvent", _keyEventHandler);
+        }
+        if (focusedEditor) {
+            $(focusedEditor).on("keyEvent", _keyEventHandler);
+        }
+    };
+
     AppInit.appReady(function () {
         var currentEditor = EditorManager.getCurrentFullEditor();
-		$(currentEditor).on("keyEvent", _keyEventHandler);
-		$(EditorManager).on("activeEditorChange", _activeEditorChangeHandler);
+        $(currentEditor).on("keyEvent", _keyEventHandler);
+        $(EditorManager).on("activeEditorChange", _activeEditorChangeHandler);
     });
-    
+
 });
