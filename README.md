@@ -12,4 +12,3 @@ Simply type, and if your cursor is between `<tag>|</tag>` (`|` is the cursor) an
 
 ### TODO
 * Check if this extension works in Macintosh.
-* Detect user's tab preferences (error when tab length is 0 and by spaces).
