@@ -12,4 +12,4 @@ Simply type, and if your cursor is between `<tag>|</tag>` (`|` is the cursor) an
 
 ### TODO
 * Check if this extension works in Macintosh.
-* Add support for PHP braces (see issue #1).
+* Add support for PHP braces, see issue #1 
