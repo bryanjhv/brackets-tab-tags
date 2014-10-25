@@ -1,75 +1,79 @@
-/*jslint vars: true, plusplus: true, devel: true, nomen: true, indent: 4, maxerr: 50 */
-/*global define, brackets, $ */
+/*jslint nomen: true, vars: true */
+/*global define, brackets, $*/
 
 define(function (require, exports, module) {
 
-    "use strict";
+  'use strict';
 
-    // Brackets modules
-    var AppInit         = brackets.getModule("utils/AppInit"),
-        DocumentManager = brackets.getModule("document/DocumentManager"),
-        EditorManager   = brackets.getModule("editor/EditorManager"),
-        KeyEvent        = brackets.getModule("utils/KeyEvent");
+  // Brackets modules
+  var AppInit     = brackets.getModule('utils/AppInit'),
+    EditorManager = brackets.getModule('editor/EditorManager'),
+    KeyEvent      = brackets.getModule('utils/KeyEvent');
 
-    function _createIndentation(editor) {
-        if (editor._codeMirror.getOption("indentWithTabs")) {
-            return "\t";
-        } else {
-            var indent = "";
-            for (var i = 0, spaceUnits = editor._codeMirror.getOption("indentUnit"); i < spaceUnits; i += 1) {
-                indent += " ";
-            }
-            return indent;
-        }
+  function _createIndentation(editor) {
+    return editor._codeMirror.getOption('indentWithTabs')
+      ? '\t'
+      : Array(editor._codeMirror.getOption('indentUnit') + 1).join(' ');
+  }
+
+  function _indent(editor, event, whenMatches) {
+    var document = editor.document,
+      cursorPos = editor.getCursorPos(),
+      ch = cursorPos.ch,
+      lineContent = document.getLine(cursorPos.line);
+
+    if (whenMatches === lineContent.substring(ch - 1).substring(0, 2)) {
+      var indent = _createIndentation(editor);
+
+      // Here we filter all tabs, so if:
+      // code_here
+      // <tab>another_code
+      //
+      // <tab>and_another
+      // code_again
+      // another_code haves a <tab>
+      var tabs = lineContent.split(/\S+/)[0];
+      document.replaceRange(
+        '\n' + tabs + indent + '\n' + tabs,
+        cursorPos,
+        cursorPos
+      );
+      event.preventDefault();
+      cursorPos = editor.getCursorPos();
+      editor.setCursorPos(cursorPos.line - 1, document.getLine(cursorPos.line - 1).length);
     }
+  }
 
-    // Function to handle when user presses ENTER
-    var _keyEventHandler = function ($event, editor, event) {
-        // If the user pressed ENTER (RETURN)
-        if (event.type === "keydown" && event.keyCode === KeyEvent.DOM_VK_RETURN) {
-            var fileLang = DocumentManager.getCurrentDocument().getLanguage()._id;
-            // If current file is HTML, PHP or XML
-            if (fileLang === "html" || fileLang === "php" || fileLang === "xml") {
-                var cursorPos = editor.getCursorPos();
-                var ch = cursorPos.ch;
-                var lineContent = editor.document.getLine(cursorPos.line);
-                // If the cursor is inside a tag
-                if ("><" === lineContent.substring(ch - 1, ch) + lineContent.substring(ch, ch + 1)) {
-                    var start = {
-                        line: cursorPos.line,
-                        ch: cursorPos.ch
-                    },
-                        indent = _createIndentation(editor);
-                    // Filter "\t", so if we have:
-                    // <html>
-                    //     <head>
-                    //
-                    //     </head>
-                    // </html>
-                    // then "<head>" haves a "\t".
-                    var _tabs = lineContent.split(/\S+/)[0];
-                    editor.document.replaceRange("\n" + _tabs + indent + "\n" + _tabs, start, cursorPos);
-                    event.preventDefault();
-                    cursorPos = editor.getCursorPos();
-                    editor.setCursorPos(cursorPos.line - 1, editor.document.getLine(cursorPos.line).length - 1);
-                }
-            }
-        }
-    };
+  function _keyEventHandler($event, editor, event) {
+    // On ENTER pressed
+    if (event.type === 'keydown' && event.keyCode === KeyEvent.DOM_VK_RETURN) {
+      var fileLang = editor.document.language._id;
+      // Stuff
 
-    var _activeEditorChangeHandler = function ($event, focusedEditor, lostEditor) {
-        if (lostEditor) {
-            $(lostEditor).off("keyEvent", _keyEventHandler);
-        }
-        if (focusedEditor) {
-            $(focusedEditor).on("keyEvent", _keyEventHandler);
-        }
-    };
+      // For HTML, PHP (mixed) and XML
+      if (fileLang === 'html' || fileLang === 'php' || fileLang === 'xml') {
+        _indent(editor, event, '><');
+      }
+      // For JavaScript, PHP for the moment only needs '()'
+      if (fileLang === 'javascript' || fileLang === 'php') {
+        _indent(editor, event, '()');
+      }
+    }
+  }
 
-    AppInit.appReady(function () {
-        var currentEditor = EditorManager.getCurrentFullEditor();
-        $(currentEditor).on("keyEvent", _keyEventHandler);
-        $(EditorManager).on("activeEditorChange", _activeEditorChangeHandler);
-    });
+  function _activeEditorChangeHandler($event, focusedEditor, lostEditor) {
+    if (lostEditor) {
+      $(lostEditor).off('keyEvent', _keyEventHandler);
+    }
+    if (focusedEditor) {
+      $(focusedEditor).on('keyEvent', _keyEventHandler);
+    }
+  }
+
+  AppInit.appReady(function () {
+    var currentEditor = EditorManager.getActiveEditor();
+    $(currentEditor).on('keyEvent', _keyEventHandler);
+    $(EditorManager).on('activeEditorChange', _activeEditorChangeHandler);
+  });
 
 });
