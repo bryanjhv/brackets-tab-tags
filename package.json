@@ -1,11 +1,11 @@
 {
-    "name": "tab-tags",
-    "title": "Tab tags",
-    "description": "Indents HTML/XML tags and JS & PHP parentheses.",
-    "version": "1.0.3",
-    "author": "Bryan Horna <bryanjhv@gmail.com>",
-    "homepage": "https://github.com/bryanjhv/brackets-tab-tags",
-    "engines": {
-        "brackets": ">=0.31.0"
-    }
+  "name": "tab-tags",
+  "title": "Tab tags",
+  "description": "Indents HTML/XML tags and JS & PHP parentheses.",
+  "version": "1.0.3",
+  "author": "Bryan Horna <bryanjhv@gmail.com>",
+  "homepage": "https://github.com/bryanjhv/brackets-tab-tags",
+  "engines": {
+    "brackets": ">=0.31.0"
+  }
 }
