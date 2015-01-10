@@ -46,7 +46,7 @@ define(function (require, exports, module) {
 
   function _keyEventHandler($event, editor, event) {
     // On ENTER pressed
-    if (event.type === 'keydown' && event.keyCode === KeyEvent.DOM_VK_RETURN) {
+    if (event.keyCode === KeyEvent.DOM_VK_RETURN) {
       var fileLang = editor.document.language._id;
       // Stuff
 
@@ -63,16 +63,16 @@ define(function (require, exports, module) {
 
   function _activeEditorChangeHandler($event, focusedEditor, lostEditor) {
     if (lostEditor) {
-      $(lostEditor).off('keyEvent', _keyEventHandler);
+      $(lostEditor).off('keydown', _keyEventHandler);
     }
     if (focusedEditor) {
-      $(focusedEditor).on('keyEvent', _keyEventHandler);
+      $(focusedEditor).on('keydown', _keyEventHandler);
     }
   }
 
   AppInit.appReady(function () {
     var currentEditor = EditorManager.getActiveEditor();
-    $(currentEditor).on('keyEvent', _keyEventHandler);
+    $(currentEditor).on('keydown', _keyEventHandler);
     $(EditorManager).on('activeEditorChange', _activeEditorChangeHandler);
   });
 
