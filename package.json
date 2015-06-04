@@ -2,7 +2,7 @@
   "name": "tab-tags",
   "title": "Tab tags",
   "description": "Indents HTML/XML tags and JS & PHP parentheses.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "Bryan Horna <bryanjhv@gmail.com>",
   "homepage": "https://github.com/bryanjhv/brackets-tab-tags",
   "engines": {
