@@ -63,17 +63,17 @@ define(function (require, exports, module) {
 
   function _activeEditorChangeHandler($event, focusedEditor, lostEditor) {
     if (lostEditor) {
-      $(lostEditor).off('keydown', _keyEventHandler);
+      lostEditor.off('keydown', _keyEventHandler);
     }
     if (focusedEditor) {
-      $(focusedEditor).on('keydown', _keyEventHandler);
+      focusedEditor.on('keydown', _keyEventHandler);
     }
   }
 
   AppInit.appReady(function () {
     var currentEditor = EditorManager.getActiveEditor();
-    $(currentEditor).on('keydown', _keyEventHandler);
-    $(EditorManager).on('activeEditorChange', _activeEditorChangeHandler);
+    currentEditor.on('keydown', _keyEventHandler);
+    EditorManager.on('activeEditorChange', _activeEditorChangeHandler);
   });
 
 });
