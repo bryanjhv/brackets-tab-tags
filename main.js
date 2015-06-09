@@ -70,10 +70,6 @@ define(function (require, exports, module) {
     }
   }
 
-  AppInit.appReady(function () {
-    var currentEditor = EditorManager.getActiveEditor();
-    currentEditor.on('keydown', _keyEventHandler);
-    EditorManager.on('activeEditorChange', _activeEditorChangeHandler);
-  });
+  EditorManager.on('activeEditorChange', _activeEditorChangeHandler);
 
 });
