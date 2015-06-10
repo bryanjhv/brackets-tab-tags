@@ -1,19 +1,18 @@
 /*jslint nomen: true, vars: true */
-/*global define, brackets, $*/
+/*global define, brackets*/
 
 define(function (require, exports, module) {
 
   'use strict';
 
   // Brackets modules
-  var AppInit     = brackets.getModule('utils/AppInit'),
-    EditorManager = brackets.getModule('editor/EditorManager'),
-    KeyEvent      = brackets.getModule('utils/KeyEvent');
+  var EditorManager = brackets.getModule('editor/EditorManager'),
+    KeyEvent        = brackets.getModule('utils/KeyEvent');
 
   function _createIndentation(editor) {
-    return editor._codeMirror.getOption('indentWithTabs')
+    return editor._getOption('useTabChar')
       ? '\t'
-      : Array(editor._codeMirror.getOption('indentUnit') + 1).join(' ');
+      : Array(editor._getOption('spaceUnits') + 1).join(' ');
   }
 
   function _indent(editor, event, whenMatches) {
@@ -63,17 +62,13 @@ define(function (require, exports, module) {
 
   function _activeEditorChangeHandler($event, focusedEditor, lostEditor) {
     if (lostEditor) {
-      $(lostEditor).off('keydown', _keyEventHandler);
+      lostEditor.off('keydown', _keyEventHandler);
     }
     if (focusedEditor) {
-      $(focusedEditor).on('keydown', _keyEventHandler);
+      focusedEditor.on('keydown', _keyEventHandler);
     }
   }
 
-  AppInit.appReady(function () {
-    var currentEditor = EditorManager.getActiveEditor();
-    $(currentEditor).on('keydown', _keyEventHandler);
-    $(EditorManager).on('activeEditorChange', _activeEditorChangeHandler);
-  });
+  EditorManager.on('activeEditorChange', _activeEditorChangeHandler);
 
 });
