@@ -18,6 +18,3 @@ function my_function(
   |
 ) {}
 ```
-
-### TODO
-* Check if this extension works in Macintosh.
