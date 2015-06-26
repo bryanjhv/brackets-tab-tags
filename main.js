@@ -57,9 +57,10 @@ define(function (require, exports, module) {
       if (fileLang === 'javascript' || fileLang === 'php') {
         _indent(editor, event, '()');
       }
-      // For CSS, LESS for the moment only needs '{}'
-      if (fileLang === 'css' || fileLang === 'less') {
+      // For CSS, LESS, SCSS for the moment needs '{}' and '()' (media queries)
+      if (fileLang === 'css' || fileLang === 'less' || fileLang === 'scss') {
         _indent(editor, event, '{}');
+        _indent(editor, event, '()');
       }
     }
   }
