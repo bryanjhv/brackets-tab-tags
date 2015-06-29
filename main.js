@@ -15,13 +15,14 @@ define(function (require, exports, module) {
       : Array(editor._getOption('spaceUnits') + 1).join(' ');
   }
 
-  function _indent(editor, event, whenMatches) {
+  function _indent(editor, event, half1, half2) {
     var document = editor.document,
       cursorPos = editor.getCursorPos(),
       ch = cursorPos.ch,
-      lineContent = document.getLine(cursorPos.line);
-
-    if (lineContent.substring(ch - 1).indexOf(whenMatches) == 0) {
+      lineContent = document.getLine(cursorPos.line),
+      lineHalf1 = lineContent.substring(0, ch),
+      lineHalf2 = lineContent.substring(ch);
+    if (half1.test(lineHalf1) && half2.test(lineHalf2)){
       var indent = _createIndentation(editor);
 
       // Here we filter all tabs, so if:
@@ -51,16 +52,16 @@ define(function (require, exports, module) {
 
       // For HTML, PHP (mixed) and XML
       if (fileLang === 'html' || fileLang === 'php' || fileLang === 'xml') {
-        _indent(editor, event, '></');
+        _indent(editor, event, /<(?!\/)\w+>$/, /^<\//);
       }
       // For JavaScript, PHP for the moment only needs '()'
       if (fileLang === 'javascript' || fileLang === 'php') {
-        _indent(editor, event, '()');
+        _indent(editor, event, /\($/, /^\)/);
       }
       // For CSS, LESS, SCSS for the moment needs '{}' and '()' (media queries)
       if (fileLang === 'css' || fileLang === 'less' || fileLang === 'scss') {
-        _indent(editor, event, '{}');
-        _indent(editor, event, '()');
+        _indent(editor, event, /\{$/, /^\}/);
+        _indent(editor, event, /\($/, /^\)/);
       }
     }
   }
