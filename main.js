@@ -21,7 +21,7 @@ define(function (require, exports, module) {
       ch = cursorPos.ch,
       lineContent = document.getLine(cursorPos.line);
 
-    if (whenMatches === lineContent.substring(ch - 1).substring(0, 2)) {
+    if (lineContent.substring(ch - 1).indexOf(whenMatches) == 0) {
       var indent = _createIndentation(editor);
 
       // Here we filter all tabs, so if:
@@ -51,7 +51,7 @@ define(function (require, exports, module) {
 
       // For HTML, PHP (mixed) and XML
       if (fileLang === 'html' || fileLang === 'php' || fileLang === 'xml') {
-        _indent(editor, event, '><');
+        _indent(editor, event, '></');
       }
       // For JavaScript, PHP for the moment only needs '()'
       if (fileLang === 'javascript' || fileLang === 'php') {
