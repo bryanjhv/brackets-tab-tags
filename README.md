@@ -30,3 +30,9 @@ body {
   |
 ) {}
 ```
+
+### Plans
+
+- Work with `Preferences` API to let user set its own indents.
+- Optimize code a bit.
+- Maybe hardcode the `KeyEvent` require?
