@@ -54,12 +54,8 @@ define(function (require, exports, module) {
       if (fileLang === 'html' || fileLang === 'php' || fileLang === 'xml') {
         _indent(editor, event, /<(?!\/)\w+>$/, /^<\//);
       }
-      // For JavaScript, PHP for the moment only needs '()'
-      if (fileLang === 'javascript' || fileLang === 'php') {
-        _indent(editor, event, /\($/, /^\)/);
-      }
-      // For CSS, LESS, SCSS for the moment needs '{}' and '()' (media queries)
-      if (fileLang === 'css' || fileLang === 'less' || fileLang === 'scss') {
+      // For Javascript, PHP, CSS, LESS, SCSS support both '{}' and '()'
+      if (fileLang === 'javascript' || fileLang === 'php' || fileLang === 'css' || fileLang === 'less' || fileLang === 'scss') {
         _indent(editor, event, /\{$/, /^\}/);
         _indent(editor, event, /\($/, /^\)/);
       }
