@@ -1,12 +1,10 @@
 # Tab Tags
 
-**NOTE: This project is no longer maintained. The reason: now Brackets sucks and
-I'm using [WebStorm][wstorm] now. Feel free to send pull requests.**
+**NOTE: This project is no longer maintained.**
 
 A **very** simple [Brackets](http://brackets.io) extension to add a newline and
 tab between HTML or XML tags, like Aptana Studio 3 does it, and enhance behavior
 with JavaScript and PHP parentheses, also CSS and preprocessors.
-
 
 ## How To Use
 
@@ -35,12 +33,8 @@ body {
 ) {}
 ```
 
-
 ## Plans
 
 - Work with `Preferences` API to let user set its own indents.
 - Optimize code a bit.
 - Maybe hardcode the `KeyEvent` require?
-
-
-[wstorm]: https://www.jetbrains.com/webstorm
