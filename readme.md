@@ -1,4 +1,4 @@
-# Tab Tags &nbsp;&nbsp;&nbsp; [![Donate][paybtn]][paylnk]
+# Tab Tags
 
 **NOTE: This project is no longer maintained. The reason: now Brackets sucks and
 I'm using [WebStorm][wstorm] now. Feel free to send pull requests.**
@@ -44,6 +44,3 @@ body {
 
 
 [wstorm]: https://www.jetbrains.com/webstorm
-
-[paybtn]: https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif
-[paylnk]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DVB7SSMVSHGTN
